@@ -73,8 +73,8 @@ OID(4003, GN, 8)
 	netcoord_unpack(&lat, I(4), "SN");
 	netcoord_unpack(&lon, I(0), "WE");
 
-	printf("Network location: %02i°%02i'%02i.%02i\"%c %02i°%02i'%02i.%02i\"%c (%f, %f)\n",
-			lat.deg, lat.min, lat.sec, lat.cent, lat.sign,
-			lon.deg, lon.min, lon.sec, lon.cent, lon.sign,
+	printf("Network location: %02i°%02i'%02i\"%c %02i°%02i'%02i\"%c (%f, %f)\n",
+			lat.deg, lat.min, lat.sec, lat.sign,
+			lon.deg, lon.min, lon.sec, lon.sign,
 			lat.ddeg, lon.ddeg);
 }
