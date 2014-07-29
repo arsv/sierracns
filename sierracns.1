@@ -1,0 +1,154 @@
+.TH sierracns 1
+'''
+.SH NAME
+sierracns \- Control and Status (CnS) protocol tool for Sierra Wireless 3G/4G modems.
+'''
+.SH SYNOPSIS
+\fBsierracns\fR [options] [oid oid oid ...]
+.br
+\fBsierracns\fR [options] command [arg ...]
+'''
+.SH DESCRIPTION
+Sierra Wireless 3G modems handled by sierra.ko kernel driver provide three
+TTY devices, typically named ttyUSB0, ttyUSB1 and ttyUSB2.
+The 1st port (ttyUSB0) provides Hayes modem interface (AT commands, PPP).
+The 3rd port (ttyUSB2) is GPS NMEA output.
+
+Sierra Control and Status (CnS) is the protocol these modems talk
+on their 2nd tty interface. 
+
+CnS allows querying runtime status data from the modem without interrupting
+PPP connection on the 1st port, as well as doing some configuration like setting
+modem internal time, managing phonebook on GSM units and so on.
+
+\fBsierracns\fR allows sending/receiving CnS requests and provides limited
+decoding for some of modem replies.
+'''
+.SH USAGE
+Each CnS request carries a 2-byte code (object id, oid) which determines what is being
+requested. Modem replies with some data, assuming the user knows what that data means.
+
+Requests can be either get, set, or notification control. Get and notifications
+generally require only the oid. For set requests, the data to be set should also be provided.
+
+The tool sends specified requests, and waits for modem to reply. Replies the tool
+can decode are shown in human-readable form; any other replies are dumped raw.
+
+.SS Options
+.IP "-d \fIdevice\fR"
+Device to use, instead of default /dev/ttyUSB1. The tool does not attempt to detect
+which devices are served by sierra.ko, so make sure to use -d if you have non-sierra
+ttyUSB* devices and/or unusual device naming scheme.
+.IP -C
+Dump raw CnS packets.
+.IP -H
+Dump raw HIP packets.
+.IP -O
+Dump outgoing packets too (without this option, only incoming packets are shown).
+.IP -n
+Show notification enable/disable packets (normally suppressed).
+.P
+'''
+.SS OID requests
+The basic way of communicating with the modem. Each [oid] chunk represents a single CnS packet,
+encoded this way:
+.IP "NNNN[o[PPPP....]]" 10
+.P
+where NNNN is oid (hexadecimal, 4 digits), o is operation and PPPP... is payload.
+Operations: get ":", set "=", enable notifications "+", disable notifications "-".
+Bare oid means empty get request. Payload is a sequence of hex byte value,
+like 23 or 7F, possibly separated with - for readability.
+.P
+Examples:
+.IP "0003"
+Simple GET request, no payload.
+.IP "1044:0001"
+GET request with payload.
+.IP "0F02=0001-0001-00FF-FFFFFFF0"
+SET request with payload (start GPS fix in this case)
+.IP "1001+"
+Enable notification request, no payload.
+'''
+.P
+Some common OIDs the tool can decode:
+.PD 0
+.RS
+.TP
+0001 Firmware version
+.TP
+0002 Firmware build date
+.TP
+0003 Hardware version
+.TP
+0004 Boot version
+.TP
+000A Model
+.TP
+1000 ESN [CDMA only]
+.TP
+1001 RSSI (received signal strength indicator)
+.TP
+1004 IMSI (network name) [UMTS only]
+.TP
+1006 Service indication [CDMA only]
+.TP
+001B [UMTS] / 1032 [CDMA] Network date and time
+.TP
+1065 RSSI and Ec/io [CDMA only]
+.TP
+1067 IMEI [UMTS only]
+.TP
+1069 HDR Service Indication [CDMA only]
+.TP
+106A HDR Hybrid Mode [CDMA only]
+.RE
+'''
+.SS Commands
+These are mostly shorthands for common OIDs and OID sequences, including those
+for which payload is non-trivial and hard to write manually.
+'''
+.IP "rssi" 4
+Signal strength.
+.IP "hdr\ \ " 4
+Signal strength, Ec/io and connection mode for CDMA modems.
+.IP "reset" 4
+Modem reset.
+.IP "time" 4
+Show current network time.
+.IP "radio [on|off]" 4
+Enable/disable radio. Another name for "radio off" is airplane mode.
+.IP "gps" 4
+Show current GPS location.
+.IP "gps on|off" 4
+Same as AT!GPSLOCK=0|1
+.IP "gps fix [-m mode] [-t duration] [-d accuracy] [-]" 4
+Initiate GPS fix. Same as AT!GPSFIX=mode,duration,accuracy.
+With trailing -, wait for results and report coordinates.
+.IP "gps track [-m mode|-a] [-t duration] [-d uncert] [-n nfixes] [-i interval]" 4
+Start GPS tracking session. Same as AT!GPSTRACK=mode,duration,accuracy,nfixes,interval.
+.IP "gps end" 4
+End GPS tracking session.
+.IP "gps status"
+Show GPS status. Same as AT!GPSSTATUS.
+.IP "gps satellites"
+List of visible satellites.
+.IP "gps clear" 4
+Clear internal GPS data (almanac, ephemeris etc).
+'''
+.SH NOTES
+The tool is experimental. Use with caution.
+CnS protocol is considered proprietary, documentation is scarce and unreliable.
+
+OIDs and reply formats may be different for different modems.
+In particular, CDMA and GSM/UMTS modems may return different data for the same oids.
+Reply format for some oids depends on firmware version.
+Whenever possible, try to obtain documentation for your particular modem.
+
+The tool may return bogus results; if unsure, dump raw CnS data (-C)
+and try to decode it yourself.
+
+GET requests should be harmless (but that's not guaranteed).
+SET requests, on the other hand, should be used with care.
+However, if documentation is to be trusted, you are risking nvram at most.
+Writing to flash (firmware) area requires packets not implemented in this tool.
+'''

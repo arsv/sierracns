@@ -1,0 +1,60 @@
+Overview
+~~~~~~~~
+sierracns is a simple tool for checking Sierra 3G modem connection status
+and signal strength while PPP session is active.
+
+It was written for MC5725 (AC595U) mini-PCI-e CDMA card, and will probably
+need updates to work with MC7xxx, MC8xxx or any other GSM/UMTS/WCDMA cards.
+
+sierracns is a limited CLI equivalent of Windows-only
+Sierra Wireless Watcher application.
+
+
+Building
+~~~~~~~~
+Run make.
+Make sure relevant character device (/dev/ttyUSB1) is writable.
+There are no dependencies other that basic libc.
+
+
+What is CnS
+~~~~~~~~~~~
+Sierra Wireless 3G modems handled by sierra.ko kernel driver provide three
+TTY devices, typically named ttyUSB0, ttyUSB1 and ttyUSB2.
+The 1st port (ttyUSB0) provides Hayes modem interface (AT commands, PPP).
+The 3rd port (ttyUSB2) is GPS NMEA output.
+
+Sierra Control and Status (CnS) is a proprietary protocol these modems talk
+on their 2nd tty interface. 
+
+CnS allows querying runtime status data from the modem without interrupting
+PPP connection on the 1st port, as well as doing some configuration like setting
+modem internal time, managing phonebook on GSM units and so on.
+
+The 2nd port is also used to re-flash modem firmware in newer modems,
+but that is not technically CnS.
+
+
+Tool status
+~~~~~~~~~~~
+The tool is highly experimental.
+Be ready to tweak it for your particular modem.
+
+Complete CnS protocol documentation is not available publicly.
+From what I can tell, there are several versions with serious compatibility
+issues between them, and no clear way to tell which one is being used.
+
+Of particular importance is the different between older CDMA/EV-DO and newer
+GSM/UMTS/WCDMA modems. They apparently accept the same requests, but reply with
+wildly different data.
+Bogus output from sierracns should not come as a surprise.
+
+
+
+Author
+~~~~~~
+Alex Suykov <alex.suykov@gmail.com>
+Patches, suggestions and reports on specific modems are welcome.
+
+Please note I am not affiliated with Sierra Wireless in any way
+and do not have access to any restricted documentation.

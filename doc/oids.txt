@@ -1,0 +1,45 @@
+Undocumented requests
+~~~~~~~~~~~~~~~~~~~~~
+Some requests I have no documentation for, but somehow find kinda promising.
+All tried on MC5725.
+
+Generally modem replies with "err2:invalid object id" if the oid is out of range,
+and "err4:invalid length" if get requests needs some data.
+
+The meaning of "err3:invalid operation type" and "err6:invalid request" is not clear.
+In some cases (0F0B) "invalid request" is issued because it only allows notifications,
+not get requests.
+
+Most oids ignore request payload with no error messages.
+
+4015:aaaa -> { S:a B:b (8 bytes of data) B:c S:z }
+accepts any two-byte "address", repeats it together with 12 bytes of data.
+In most cases b and c are zero, but a=0000 and a=0001 produces b=01
+while a=0002 gives c=6D. The meaning of z is not clear.
+Only a=0000...0014 return non-zero data.
+
+1037:0000 -> { S:0 (8 zero bytes) }
+1037:0001 -> { S:1 (8 zero bytes) }
+
+1038:000X -> { S:X S:l string(l) S S B }
+only X=0 and X=1 are allowed, l=10 in both cases and the string is numeric.
+X=0 produces the same string as 1002 with no payload
+
+4018 returns "2.0" (a string). Same as 0003, so chances are it's HW version.
+
+1033 returns "err11:Bad NV read". Hm.
+
+FFFF reboots modem (even a GET request!)
+
+0F01=000000000000
+start something gps-related. Returns reply similar to 0F04.
+
+0F03 seems to be AT!GPSSTATUS data. Not documented.
+
+0F14 { S:1 S:x } == AT!GPSLOCK=x
+(the first short is apparently request version)
+
+7000 any SET request accepted; payload ignored. Same with 7001.
+7002, 7003 — notifications only
+
+1044:0000, 1044:0001 (other payloads rejected). Both return 3 shorts.

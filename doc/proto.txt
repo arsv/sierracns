@@ -1,0 +1,58 @@
+Sierra CnS protocol overview
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CnS messages are short one-packet datagrams. Each request is a CnS message,
+and each modem reply is a CnS message.
+
+The protocol is asynchronous. Requests are not acknowledged. Replies are in fact
+status notifications, and modem may send them without a request. 
+In most cases however, talking to modem is a simple
+	request reply request reply request reply ...
+sequence. For unrecognized requests, modem usually replies with an error notification.
+
+Each CnS message has a 2-byte request code (called object id, or oid in the source)
+determining what is being retrieved or set. Each packet may also carry variable-length
+payload, usually containing the requested value.
+
+
+Wire protocol: CnS/HIP
+~~~~~~~~~~~~~~~~~~~~~~
+CnS messages are wrapped in HIP packets like this:
+
+	HIP:  |mid|...|len|-------------------------------|
+	CnS:              |oid|op|len|------payload-------|
+
+HIP is a basic packet protocol with start/stop bytes and character escaping
+(running over emulated serial link over inherently packet-based USB, yep).
+
+Bare HIP is used for firmware flashing, but everything else is done
+with CnS packets carried by HIP packets.
+
+The mid (message id) field in HIP, just like oid field in CnS packet, determines
+the kind of payload the packet carries. Two particular mids, 0x2B and 0x6B, mean
+the payload is in fact a CnS packet, to and from modem respectively.
+
+Both HIP and CnS packets have length field. Sometimes modem replies with a HIP
+packet that's slighly larger than the CnS packet inside, but that seems to be
+address alignment or something like that.
+
+
+CnS objects
+~~~~~~~~~~~
+The oid field determines the structure and meaning of the payload... well, no,
+not really. For any given modem it does apparently, but different modems may
+reply with different data for the same oid. Or differently-structured data with
+the same meaning.
+
+Anyway, oid is the only clear way to identify the contents of the packet.
+The tool also checks for the packet length, but it's clearly not reliable.
+
+For some oids, the data start with a two-byte version field.
+For others, it doesn't.
+Anyway, even matching version does not guarantee anything.
+
+
+Error handling
+~~~~~~~~~~~~~~
+Invalid HIP packets are discarded. For invalid CnS requests, modem returns
+free-form error message (a string) in a reply packet with error bit set.
+The messages my modem produces start with "errN", N being error code.
