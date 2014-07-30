@@ -205,7 +205,7 @@ OID(0F1F, GN, -4)
 		printf("\n");
 
 	for(i = 0; i < num && ((off = 3 + 5*(i+1)) <= L); i++)
-		printf("SAT%02i elevation=%ideg azimuth=%ideg SNR=%idB\n",
+		printf("SAT%02i elevation %i° azimuth %i° SNR %idB\n",
 				B(off + 0), B(off + 1), S(off + 2), B(off + 4));
 }
 
@@ -235,7 +235,7 @@ OID(0F0A, GN, -36)
 	if(S(22))
 		printf("GPS height: %im", S(24) - 500);
 	if(S(28))
-		printf("GPS h-velocity: %.2fm/s heading %.3fdeg\n", 0.25*S(32), S(30)*360.0/(2<<10));
+		printf("GPS h-velocity: %.2fm/s heading %.3f°\n", 0.25*S(32), S(30)*360.0/(2<<10));
 	if(S(28) && S(20))
 		printf("GPS v-velocity: %.1fm/s\n", 0.5*S(34));
 }
