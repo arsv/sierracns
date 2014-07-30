@@ -10,6 +10,7 @@
 extern struct cns* cns;
 
 static int queryoid(char* oidspec);
+static void parsepayload(char* spec, int* len, char* payload);
 static int parsehexbyte(char* dst, char* src);
 
 int cmd_query(int argc, char** argv)
@@ -53,19 +54,35 @@ static int queryoid(char* oidspec)
 			   errx(0, "bad op specification: %s", oidspec);
 	}
 
-	int speclen = strlen(oidspec);
-	int len = speclen > 5 ? (speclen - 5)/2 : 0;
+	int speclen = oidspec[4] ? strlen(oidspec + 5) : 0;
+	int len = speclen / 2;	 /* may be a bit too much, but who cares */
 	char payload[len];
 
-	if(len && speclen % 2 == 0)  /* speclen = 5 + payload, so it must be odd */
-		errx(0, "incomplete byte in payload: %s", oidspec);
-
-	char *p, *q;
-	for(p = oidspec + 5, q = payload; p < oidspec + 5 + 2*len; p += 2, q++)
-		if(parsehexbyte(q, p))
-			errx(0, "bad oid payload: %s", oidspec);
+	if(speclen)
+		parsepayload(oidspec + 5, &len, payload);
 
 	return querycns(RE, oid, op, len, payload);
+}
+
+/* Parse payload specification from spec, putting the result to payload
+   and adjusting *len if necessary.
+   	spec is something like "23DF-01-0000"
+ 	*len is the space available initially in payload */
+static void parsepayload(char* spec, int* len, char* payload)
+{
+	char* p = spec;
+	char* q = payload;
+	char* e = payload + *len;
+	
+	while(*p && q < e)
+		if(strchr("-,", *p))
+			p += 1;
+		else if(parsehexbyte(q++, p))
+			errx(0, "bad oid payload: %s", spec);
+		else /* parsehexbyte fails if there's less that two characters at p */
+			p += 2;
+
+	*len = q - payload;
 }
 
 /* Take somethings like "7D" from src and put 0x7D to *dst */
