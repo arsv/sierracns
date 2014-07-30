@@ -43,3 +43,10 @@ start something gps-related. Returns reply similar to 0F04.
 7002, 7003 — notifications only
 
 1044:0000, 1044:0001 (other payloads rejected). Both return 3 shorts.
+
+1033:00140000 -> { 00 14 00 00 01 1B 01 80 }
+                   ~~~~~~~~~~~ ^^^^^ ^^^^^
+                   address     Pri.A Pri.B  channel
+1033:00150000 -> { 00 15 00 00 02 B3 03 09 }
+                   ~~~~~~~~~~~ ^^^^^ ^^^^^
+                   address     Sec.A Sec.B  channel
