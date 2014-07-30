@@ -230,10 +230,7 @@ OID(0F0A, GN, -36)
 	}
 
 	printf("GPS time: %i\n", I(10));
-	printf("GPS location: %.6f%c %.6f%c %s\n",
-			fabs(lat), lat >= 0 ? 'N' : 'S',
-			fabs(lon), lon >= 0 ? 'E' : 'W',
-			S(20) ? "3D" : "2D");
+	printf("GPS location: %.6f %.6f %s\n", lat, lon, S(20) ? "3D" : "2D");
 	printf("GPS uncertainity: angle %.3f A %s P %s\n", 5.625*S(14), DS(16, PU), DS(18, PU));
 	if(S(22))
 		printf("GPS height: %im", S(24) - 500);
