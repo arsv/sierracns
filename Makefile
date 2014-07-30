@@ -11,7 +11,7 @@ oids = oid.o oid_gps.o oid_time.o oid_net.o
 objs = main.o wire.o query.o show.o dict.o $(cmds) $(oids)
 	 
 .c.o:
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c $<
 
 sierracns: $(objs)
 	$(CC) -o $@ $(filter %.o,$^)
