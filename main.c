@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <signal.h>
+#include <sys/file.h>
 #include <err.h>
 
 #include "abbr.h"
@@ -183,7 +184,11 @@ int main(int argc, char** argv)
 		}
 
 	if((hipfd = open(modem, O_RDWR)) < 0)
-		errx(0, "Can't open %s", modem);
+		err(errno, "can't open %s", modem);
+
+	if(flock(hipfd, LOCK_EX | LOCK_NB))
+		err(errno, "can't lock %s", modem);
+
 	modemsetup(hipfd);
 	sigsetup();
 
