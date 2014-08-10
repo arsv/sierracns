@@ -12,19 +12,15 @@
 
 /* Overall program structure:
    	wire.c			underlying wire protocols, packet send/recv
-	query.c, watch.c	basic commands operating on raw OIDs
+	query.c			basic commands operating on raw OIDs
 	show.c			entry point for formatted CnS output
 	main.c			entry point for commands
-	o???.c			show_* rountines for individual OIDs
-	c???.c			secondary commands (gps, sms and such)
+	oid*.c			display rountines for individual OIDs
+	cmd*.c			commands (gps, sms and such)
 
    Grouping routines by topic only (gps.c, sms.c etc) sounds like a good idea
    at first, but it turns out there's literaly nothing common between show*
-   and commands operating on the same oids.
-
-   show.c contains the master list of all show_* calls
-   For commands, top-level list is in main.c but sub-commands are listed
-   in their respective o*.c files. */
+   and commands operating on the same oids. */
 
 int signalled = -1;
 

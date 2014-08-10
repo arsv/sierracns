@@ -33,7 +33,7 @@ generally require only the oid. For set requests, the data to be set should also
 
 The tool sends specified requests, and waits for modem to reply. Replies the tool
 can decode are shown in human-readable form; any other replies are dumped raw.
-
+'''
 .SS Options
 .IP "-d \fIdevice\fR"
 Device to use, instead of default /dev/ttyUSB1. The tool does not attempt to detect
@@ -70,7 +70,7 @@ SET request with payload (start GPS fix in this case)
 Enable notification request, no payload.
 '''
 .P
-Some common OIDs the tool can decode:
+Some OIDs the tool can decode:
 .PD 0
 .RS
 .TP
@@ -101,12 +101,15 @@ Some common OIDs the tool can decode:
 1069 HDR Service Indication [CDMA only]
 .TP
 106A HDR Hybrid Mode [CDMA only]
+.TP
+4003 Network location [CDMA only?]
 .RE
 '''
 .SS Commands
 These are mostly shorthands for common OIDs and OID sequences, including those
 for which payload is non-trivial and hard to write manually.
 '''
+.sp
 .IP "rssi" 4
 Signal strength.
 .IP "hdr\ \ " 4
@@ -117,14 +120,14 @@ Modem reset.
 Show current network time.
 .IP "radio [on|off]" 4
 Enable/disable radio. Another name for "radio off" is airplane mode.
-.IP "gps" 4
+.IP "gps\ " 4
 Show current GPS location.
 .IP "gps on|off" 4
 Same as AT!GPSLOCK=0|1
 .IP "gps fix [-m mode] [-t duration] [-d accuracy] [-]" 4
 Initiate GPS fix. Same as AT!GPSFIX=mode,duration,accuracy.
 With trailing -, wait for results and report coordinates.
-.IP "gps track [-m mode|-a] [-t duration] [-d uncert] [-n nfixes] [-i interval]" 4
+.IP "gps track [-m mode] [-t duration] [-d uncert] [-n nfixes] [-i interval]" 4
 Start GPS tracking session. Same as AT!GPSTRACK=mode,duration,accuracy,nfixes,interval.
 .IP "gps end" 4
 End GPS tracking session.
@@ -135,6 +138,10 @@ List of visible satellites.
 .IP "gps clear" 4
 Clear internal GPS data (almanac, ephemeris etc).
 '''
+.sp
+.P
+Use -CO or read the sources to see which OIDs are being requested by each command.
+
 .SH NOTES
 The tool is experimental. Use with caution.
 CnS protocol is considered proprietary, documentation is scarce and unreliable.
@@ -152,3 +159,9 @@ SET requests, on the other hand, should be used with care.
 However, if documentation is to be trusted, you are risking nvram at most.
 Writing to flash (firmware) area requires packets not implemented in this tool.
 '''
+.SH AUTHOR
+Alex Suykov <alex.suykov@gmail.com>
+The source for this tool is available at https://github.com/arsv/sierracns
+'''
+.SH SEE ALSO
+Sierra document 2131024 "CDMA 1xEV-DO CnS Reference".

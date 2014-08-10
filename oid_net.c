@@ -51,7 +51,7 @@ struct netcoord {
 	double ddeg;
 };
 
-static void netcoord_unpack(struct netcoord* p, int v, char* signs)
+static void ncunpack(struct netcoord* p, int v, char* signs)
 {
 	p->ddeg = v / (4.0*60*60);
 
@@ -70,8 +70,8 @@ OID(4003, GN, 8)
 	struct netcoord lat;
 	struct netcoord lon;
 
-	netcoord_unpack(&lat, I(4), "SN");
-	netcoord_unpack(&lon, I(0), "WE");
+	ncunpack(&lat, I(4), "SN");
+	ncunpack(&lon, I(0), "WE");
 
 	printf("Network location: %02i°%02i'%02i\"%c %02i°%02i'%02i\"%c (%f, %f)\n",
 			lat.deg, lat.min, lat.sec, lat.sign,

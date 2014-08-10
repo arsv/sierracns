@@ -227,8 +227,8 @@ OID(1069, GN, 0)
 {
 	static struct dict D[] = {
 		{ 0x0000, "No service" },
-		{ 0x0002, "1xEV-DO Rev.0" },
-		{ 0x0004, "1xEV-DO Rev.A" },
+		{ 0x0002, "Rev.0" },
+		{ 0x0004, "Rev.A" },
 		{ 0x0000, NULL }
 	};
 	printf("HDR Service status: %s\n", DS(0, D));
@@ -251,8 +251,8 @@ OID(1007, GN, 2)
 
 OID(1075, GN, 4)
 {
-	/* no idea what S(2) means */
 	printf("Radio status: %s\n", S(0) ? "on" : "off");
+	/* no idea what is S(2) */
 }
 
 /* Should this be in oid_net.c? What does PREV mean btw?.. */

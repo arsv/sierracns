@@ -3,9 +3,6 @@
 #include <math.h>
 #include "oid.h"
 
-/* GPS status, roughly the same as AT!GPSSTATUS */
-/* No idea how DLoad works even with AT commands, so that part is skipped */
-
 struct dict PD[] = {
 	{ 0x0000, "No error" },
 	{ 0x0001, "Internal modem error" },
@@ -96,8 +93,8 @@ struct dict FE[] = {
 	{ 0x1010, "SS MOLR error—SS subscription violation" },
 	{ 0x1011, "SS MOLR error—Position method failure" },
 	{ 0x1012, "SS MOLR error—Undefined" },
-	{ 0x1013, "Control plane’s SMLC timeout, may or may not end PD" },
-	{ 0x1014, "Control plane’s MT guard time expires" },
+	{ 0x1013, "Control plane's SMLC timeout, may or may not end PD" },
+	{ 0x1014, "Control plane's MT guard time expires" },
 	{ 0x1015, "End waiting for additional assistance" },
 	{ 0x0000, NULL }
 };
@@ -125,6 +122,8 @@ static struct dict PU[] = {
 	{ 0x0000, NULL }
 };
 
+/* GPS status, roughly the same as AT!GPSSTATUS */
+/* No idea how DLoad works even with AT commands, so that part is skipped */
 OID(0F03, GN, 82)
 {
 	static struct dict D[] = {
