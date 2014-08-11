@@ -4,9 +4,9 @@
 sierracns \- Control and Status (CnS) protocol tool for Sierra Wireless 3G/4G modems.
 '''
 .SH SYNOPSIS
-\fBsierracns\fR [options] [oid oid oid ...]
+\fBsierracns\fR [\fIoptions\fR] [\fIoid oid oid\fR ...]
 .br
-\fBsierracns\fR [options] command [arg ...]
+\fBsierracns\fR [\fIoptions\fR] \fIcommand\fR [\fRarg\fR ...]
 '''
 .SH DESCRIPTION
 Sierra Wireless 3G modems handled by sierra.ko kernel driver provide three
@@ -35,17 +35,17 @@ The tool sends specified requests, and waits for modem to reply. Replies the too
 can decode are shown in human-readable form; any other replies are dumped raw.
 '''
 .SS Options
-.IP "-d \fIdevice\fR"
+.IP "\fB-d\fR \fIdevice\fR"
 Device to use, instead of default /dev/ttyUSB1. The tool does not attempt to detect
 which devices are served by sierra.ko, so make sure to use -d if you have non-sierra
 ttyUSB* devices and/or unusual device naming scheme.
-.IP -C
+.IP \fB-C\fR
 Dump raw CnS packets.
-.IP -H
+.IP \fB-H\fR
 Dump raw HIP packets.
-.IP -O
+.IP \fB-O\fR
 Dump outgoing packets too (without this option, only incoming packets are shown).
-.IP -n
+.IP \fB-n\fR
 Show notification enable/disable packets (normally suppressed).
 .P
 '''
@@ -84,25 +84,27 @@ Some OIDs the tool can decode:
 .TP
 000A Model
 .TP
-1000 ESN [CDMA only]
+1000 ESN [CDMA]
 .TP
 1001 RSSI (received signal strength indicator)
 .TP
-1004 IMSI (network name) [UMTS only]
+1004 IMSI (network name) [UMTS]
 .TP
-1006 Service indication [CDMA only]
+1006 Service indication [CDMA]
 .TP
-001B [UMTS] / 1032 [CDMA] Network date and time
+001B Network date and time [UMTS]
+.TP
+1032 Network date and time [CDMA]
 .TP
 1065 RSSI and Ec/io [CDMA only]
 .TP
-1067 IMEI [UMTS only]
+1067 IMEI [UMTS]
 .TP
-1069 HDR Service Indication [CDMA only]
+1069 HDR Service Indication [CDMA]
 .TP
-106A HDR Hybrid Mode [CDMA only]
+106A HDR Hybrid Mode [CDMA]
 .TP
-4003 Network location [CDMA only?]
+4003 Network location [CDMA?]
 .RE
 '''
 .SS Commands
@@ -110,32 +112,40 @@ These are mostly shorthands for common OIDs and OID sequences, including those
 for which payload is non-trivial and hard to write manually.
 '''
 .sp
-.IP "rssi" 4
+.IP "\fBrssi\fR" 4
 Signal strength.
-.IP "hdr\ \ " 4
+.IP "\fBhdr\fR\ \ " 4
 Signal strength, Ec/io and connection mode for CDMA modems.
-.IP "reset" 4
+.IP "\fBwatch\fR [\fIoid oid oid ...\fR]" 4
+Enable notifications and show notification packets for specified oids.
+With no oids specified, show all incoming notification.
+.IP "\fBunwatch\fR [\fIoid oid oid ...\fR]" 4
+Disable notifications for specified oids. With no oids, listen for incoming
+notification and disable them (useful for recovering after Sierra Watcher).
+.IP "\fBwatch\fR \fBrssi\fR|\fBhdr\fR"
+Same as watch 1001 and watch 1065 respectively.
+.IP "\fBreset\fR" 4
 Modem reset.
-.IP "time" 4
+.IP "\fBtime\fR" 4
 Show current network time.
-.IP "radio [on|off]" 4
+.IP "\fBradio\fR [\fBon\fR|\fBoff\fR]" 4
 Enable/disable radio. Another name for "radio off" is airplane mode.
-.IP "gps\ " 4
+.IP "\fBgps\fR\ " 4
 Show current GPS location.
-.IP "gps on|off" 4
+.IP "\fBgps\fR on\fR|\fBoff\fR" 4
 Same as AT!GPSLOCK=0|1
-.IP "gps fix [-m mode] [-t duration] [-d accuracy] [-]" 4
+.IP "\fBgps fix\fR [\fB-m \fImode\fR] [\fB-t \fIduration\fR] [\fB-d \fIaccuracy\fR] [\fB-\fR]" 4
 Initiate GPS fix. Same as AT!GPSFIX=mode,duration,accuracy.
 With trailing -, wait for results and report coordinates.
-.IP "gps track [-m mode] [-t duration] [-d uncert] [-n nfixes] [-i interval]" 4
+.IP "\fBgps track\fR [\fB-m \fImode\fR] [\fB-t \fIduration\fR] [\fB-d \fIuncert\fR] [\fB-n \fInfixes\fR] [\fB-i \fIinterval\fR]" 4
 Start GPS tracking session. Same as AT!GPSTRACK=mode,duration,accuracy,nfixes,interval.
-.IP "gps end" 4
+.IP "\fBgps end\fR" 4
 End GPS tracking session.
-.IP "gps status"
+.IP "\fBgps status\fR"
 Show GPS status. Same as AT!GPSSTATUS.
-.IP "gps satellites"
+.IP "\fBgps satellites\fR"
 List of visible satellites.
-.IP "gps clear" 4
+.IP "\fBgps clear\fR" 4
 Clear internal GPS data (almanac, ephemeris etc).
 '''
 .sp
