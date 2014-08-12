@@ -104,19 +104,24 @@ void showcns(void)
 		dumpcns(cns->len + sizeof(struct cns), (char*) cns);	/* with -C, it's been dumped already */
 }
 
-void dumphip(int hiplen, char* hipbuf)
+void dumphip(int len, char* buf)
 {
-
-	//printf("HIP 0x%02X 0x%02X { ", hip->mid, hip->par);
-	//for(p = hip->payload; p < hip->payload + ntohs(hip->len); p++)
-	//	printf("%02X ", (int)(*p & 0xFF));
-	//printf("}\n");
-
 	char* p;
+	struct hip* hip = (struct hip*) buf;
 
-	printf("HIP { ");
-	for(p = hipbuf; p < hipbuf + hiplen; p++)
+	if(len < sizeof(struct hip)) {
+		printf("HIP ...\n");
+		return;
+	}
+
+	int hiplen = ntohs(hip->len);
+	int paylen = (len >= sizeof(struct hip) + hiplen ? hiplen : len - sizeof(struct hip));
+
+	printf("HIP 0x%02X 0x%02X { ", hip->mid, hip->par);
+	for(p = hip->payload; p < hip->payload + paylen; p++)
 		printf("%02X ", (int)(*p & 0xFF));
+	if(paylen < hiplen)
+		printf("... ");
 	printf("}\n");
 }
 
@@ -125,10 +130,20 @@ void dumpcns(int len, char* buf)
 	char* p;
 	struct cns* cns = (struct cns*) buf;
 
+	if(len < sizeof(struct cns)) {
+		printf("CNS ...\n");
+		return;
+	}
+
+	int cnslen = ntohs(cns->len);
+	int paylen = (len >= sizeof(struct cns) + cnslen ? cnslen : len - sizeof(struct cns));
+
 	printf("CNS %04X %s %i:{ ",
 		ntohs(cns->oid), dict(opnames, cns->op, 1), ntohs(cns->len));
-	for(p = cns->payload; p < cns->payload + ntohs(cns->len); p++)
+	for(p = cns->payload; p < cns->payload + paylen; p++)
 		printf("%02X ", (int)(*p & 0xFF));
+	if(paylen < cnslen)
+		printf("... ");
 	printf("}\n");
 
 }

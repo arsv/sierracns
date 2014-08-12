@@ -97,12 +97,12 @@ static int decpacket(void)
 /* Encode the packet and send it. */
 int encodesend(void)
 {
+	if(opt_H && opt_O)
+		dumphip(tdlen, tdbuf);
+
 	/* This will alter hiplen */
 	if(encpacket())
 		return -1;
-
-	if(opt_H && opt_O)
-		dumphip(txlen, txbuf);
 
 	int sent = write(hipfd, txbuf, txlen);
 
@@ -158,7 +158,7 @@ int sendhip(int mid, int par, int len, char* data)
 
 	hip->mid = mid;
 	hip->par = par;
-	hip->len = len;
+	hip->len = htons(len);
 
 	memcpy(hip->payload, data, len);
 
@@ -174,7 +174,7 @@ int sendcns(int oid, int op, int len, const char* data)
 
 	hip->mid = HIP_CNS_H2M;
 	hip->par = 0x00;
-	hip->len = sizeof(struct cns) + len;
+	hip->len = htons(sizeof(struct cns) + len);
 
 	if(len > tdbuflen - sizeof(struct cns) - sizeof(struct hip))
 		return -1;
@@ -189,7 +189,7 @@ int sendcns(int oid, int op, int len, const char* data)
 	tdlen = sizeof(struct hip) + sizeof(struct cns) + len;
 
 	if(opt_C && opt_O)
-		dumpcns(hip->len, hip->payload);
+		dumpcns(ntohs(hip->len), hip->payload);
 
 	return encodesend();
 }
@@ -214,10 +214,10 @@ int recvhip(void)
 		else
 			rxlen += readlen;
 
-	if(opt_H)
-		dumphip(rxlen, rxbuf);
 	if(decpacket())
 		return -1;
+	if(opt_H)
+		dumphip(rdlen, rdbuf);
 
 	hip = (struct hip*) rdbuf;
 
@@ -255,7 +255,7 @@ int recvcns(void)
 	}
 
 	if(opt_C)
-		dumpcns(hip->len, hip->payload);
+		dumpcns(ntohs(hip->len), hip->payload);
 
 	return 0;
 }
