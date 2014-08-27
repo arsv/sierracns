@@ -193,13 +193,12 @@ int main(int argc, char** argv)
 	optind = 0;
 
 	if(argc <= 0)
-		r = cmd_();
-	else if(lookslikeoid(*argv))
+		errx(0, "command required");
+
+	if(lookslikeoid(*argv))
 		r = cmd_query(argc, argv);
 	else
 		r = trycmds(argc, argv);
-
-	close(hipfd);
 
 	return r;
 }

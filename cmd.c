@@ -10,10 +10,7 @@
 #include "wire.h"
 #include "query.h"
 
-/* Default query for the modem -- general info and possibly signal strength.
-   These oids should be good both for v1/CDMA and v2/UMTS modems.
-   Trying to CnS dialect in use is not easy, and probably makes little sense. */
-int cmd_(void)
+CMD(info, noargs)
 {
 	getcns(0x000A);	/* model id */
 	getcns(0x1000);	/* ESN */
@@ -21,7 +18,6 @@ int cmd_(void)
 	getcns(0x0002);	/* FW build date */
 	getcns(0x0003);	/* HW version */
 	getcns(0x0004);	/* Boot version */
-	getcns(0x1001);	/* RSSI */
 	return 0;
 }
 
