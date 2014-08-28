@@ -21,15 +21,15 @@ What is CnS
 ~~~~~~~~~~~
 Sierra Wireless 3G modems handled by sierra.ko kernel driver provide three
 TTY devices, typically named ttyUSB0, ttyUSB1 and ttyUSB2.
-The 1st port (ttyUSB0) provides Hayes modem interface (AT commands, PPP).
+The 1st port (ttyUSB0) provides Hayes modem interface and PPP.
 The 3rd port (ttyUSB2) is GPS NMEA output.
 
-Sierra Control and Status (CnS) is a proprietary protocol these modems talk
-on their 2nd tty interface. 
+Sierra Control and Status, or CnS for short, is a proprietary protocol
+these modems talk on their 2nd tty interface. 
 
 CnS allows querying runtime status data from the modem without interrupting
-PPP connection on the 1st port, as well as doing some configuration like setting
-modem internal time, managing phonebook on GSM units and so on.
+PPP connection on the 1st port, as well as doing some configuration
+like setting modem internal time, managing phonebook on GSM units and so on.
 
 The 2nd port is also used to re-flash modem firmware in newer modems,
 but that is not technically CnS.
