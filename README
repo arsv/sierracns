@@ -3,11 +3,10 @@ Overview
 sierracns is a simple tool for checking Sierra 3G modem connection status
 and signal strength while PPP session is active.
 
-It was written for MC5725 (AC595U) mini-PCI-e CDMA card, and will probably
-need updates to work with MC7xxx, MC8xxx or any other GSM/UMTS/WCDMA cards.
+It was written for MC5725 (AC595U) mini-PCI-e CDMA card, but may also work
+with MC7xxx, MC8xxx or other Sierra GSM/UMTS/WCDMA cards.
 
-sierracns is a limited CLI equivalent of Windows-only
-Sierra Wireless Watcher application.
+sierracns is a limited CLI equivalent of Windows-only Sierra Wireless Watcher.
 
 
 Building
@@ -24,7 +23,7 @@ TTY devices, typically named ttyUSB0, ttyUSB1 and ttyUSB2.
 The 1st port (ttyUSB0) provides Hayes modem interface and PPP.
 The 3rd port (ttyUSB2) is GPS NMEA output.
 
-Sierra Control and Status, or CnS for short, is a proprietary protocol
+Sierra Control and Status protocol, or CnS for short, is a proprietary protocol
 these modems talk on their 2nd tty interface. 
 
 CnS allows querying runtime status data from the modem without interrupting
