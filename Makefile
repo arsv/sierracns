@@ -6,20 +6,20 @@ bindir = $(prefix)/bin
 mandir = $(prefix)/share/man
 man1dir = $(mandir)/man1
 
-cmds = cmd.o cmd_gps.o cmd_poke.o cmd_watch.o cmd_query.o
-oids = oid.o oid_gps.o oid_time.o oid_net.o
-objs = main.o wire.o query.o show.o dict.o $(cmds) $(oids)
+cmds = cmd.c cmd_gps.c cmd_poke.c cmd_watch.c cmd_query.c
+oids = oid.c oid_gps.c oid_time.c oid_net.c
+srcs = main.c wire.c query.c show.c dict.c $(cmds) $(oids)
 	 
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-sierracns: $(objs)
+sierracns: $(srcs:.c=.o)
 	$(CC) -o $@ $(filter %.o,$^)
 
 main.o: cmd.hh
 show.o: oid.hh
-cmd.hh: $(patsubst %.o, %.c, $(cmds))
-oid.hh: $(patsubst %.o, %.c, $(oids))
+cmd.hh: $(cmds)
+oid.hh: $(oids)
 
 # see comments in abbr.h on this
 cmd.hh oid.hh:
