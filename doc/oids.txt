@@ -27,8 +27,6 @@ X=0 produces the same string as 1002 with no payload
 
 4018 returns "2.0" (a string). Same as 0003, so chances are it's HW version.
 
-1033 returns "err11:Bad NV read". Hm.
-
 FFFF reboots modem (even a GET request!)
 
 0F01=000000000000
@@ -43,6 +41,8 @@ start something gps-related. Returns reply similar to 0F04.
 7002, 7003 — notifications only
 
 1044:0000, 1044:0001 (other payloads rejected). Both return 3 shorts.
+
+1033 is raw NV read.
 
 1033:00140000 -> { 00 14 00 00 01 1B 01 80 }
                    ~~~~~~~~~~~ ^^^^^ ^^^^^

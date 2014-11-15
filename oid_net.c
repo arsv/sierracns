@@ -73,7 +73,7 @@ OID(4003, GN, 8)
 	ncunpack(&lat, I(4), "SN");
 	ncunpack(&lon, I(0), "WE");
 
-	printf("Network location: %02i°%02i'%02i\"%c %02i°%02i'%02i\"%c (%f, %f)\n",
+	printf("Cell location: %02i°%02i'%02i\"%c %02i°%02i'%02i\"%c (%f, %f)\n",
 			lat.deg, lat.min, lat.sec, lat.sign,
 			lon.deg, lon.min, lon.sec, lon.sign,
 			lat.ddeg, lon.ddeg);

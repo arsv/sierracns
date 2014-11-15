@@ -26,12 +26,12 @@ decoding for some of modem replies.
 '''
 .SH USAGE
 Each CnS request carries a 2-byte code (object id, oid) which determines what is being
-requested. Modem replies with some data, assuming the user knows what that data means.
+requested. Modem replies with some binary data, which the user is expected to decode.
 
 Requests can be either get, set, or notification control. Get and notifications
 generally require only the oid. For set requests, the data to be set should also be provided.
 
-The tool sends specified requests, and waits for modem to reply. Replies the tool
+The tool sends specified requests, and waits for the modem to reply. Replies the tool
 can decode are shown in human-readable form; any other replies are dumped raw.
 '''
 .SS Options
@@ -96,7 +96,7 @@ Some OIDs the tool can decode:
 .TP
 1032 Network date and time [CDMA]
 .TP
-1065 RSSI and Ec/io [CDMA only]
+1065 RSSI and Ec/io [CDMA]
 .TP
 1067 IMEI [UMTS]
 .TP
@@ -104,7 +104,7 @@ Some OIDs the tool can decode:
 .TP
 106A HDR Hybrid Mode [CDMA]
 .TP
-4003 Network location [CDMA?]
+4003 Cell location [CDMA?]
 .RE
 '''
 .SS Commands

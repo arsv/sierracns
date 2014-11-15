@@ -4,7 +4,7 @@ sierracns is a simple tool for checking Sierra 3G modem connection status
 and signal strength while PPP session is active.
 
 It was written for MC5725 (AC595U) mini-PCI-e CDMA card, but may also work
-with MC7xxx, MC8xxx or other Sierra GSM/UMTS/WCDMA cards.
+with MC7xxx, MC8xxx and other Sierra GSM/UMTS/WCDMA cards.
 
 sierracns is a limited CLI equivalent of Windows-only Sierra Wireless Watcher.
 
