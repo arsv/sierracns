@@ -41,7 +41,7 @@ int querycns(int mode, int oid, int op, int len, char* payload)
 	return ((cns->op & CNS_ERRORMASK) ? 1 : 0);
 }
 
-/* Two common short-hands, simple GET query dumping any reply,
+/* Two common short-hands: simple GET query dumping any reply,
    and SET query showing errors but silently accepting results. */
 int getcns(int oid)
 {

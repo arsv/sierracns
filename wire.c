@@ -17,7 +17,7 @@ static int tdbuflen = PACKETLEN;
 static int rdbuflen = PACKETLEN;
 
 /* This is twice the number of buffers actually needed, but having it all
-   available make opt_H and opt_O handling much easier since raw. */
+   available makes opt_H and opt_O handling much easier. */
 
 static char rxbuf[RXBUFLEN];	/* [rt]xbuf are raw wire bytes, with 7E delimiters and escaping */
 static char txbuf[TXBUFLEN];
