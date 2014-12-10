@@ -31,7 +31,7 @@ PPP connection on the 1st port, as well as doing some configuration
 like setting modem internal time, managing phonebook on GSM units and so on.
 
 The 2nd port is also used to re-flash modem firmware in newer modems,
-but that is not technically CnS.
+but that does not involve CnS strictly speaking.
 
 
 Tool status
@@ -43,7 +43,7 @@ Complete CnS protocol documentation is not available publicly.
 There are several versions with serious compatibility issues between them,
 and no clear way to tell which one is being used.
 
-Of particular importance is the different between older CDMA/EV-DO and newer
+Of particular importance is the difference between older CDMA/EV-DO and newer
 GSM/UMTS/WCDMA modems. They apparently accept the same requests, but reply with
 wildly different data.
 Bogus output from sierracns should not come as a surprise.
