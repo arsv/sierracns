@@ -8,7 +8,7 @@ man1dir = $(mandir)/man1
 
 cmds = cmd.c cmd_gps.c cmd_poke.c cmd_watch.c cmd_query.c
 oids = oid.c oid_gps.c oid_time.c oid_net.c
-srcs = main.c wire.c query.c show.c dict.c $(cmds) $(oids)
+srcs = main.c find.c wire.c query.c show.c dict.c $(cmds) $(oids)
 	 
 .c.o:
 	$(CC) $(CFLAGS) -c $<

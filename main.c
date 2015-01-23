@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <signal.h>
+#include <alloca.h>
 #include <sys/file.h>
 #include <err.h>
 
@@ -38,6 +39,7 @@ static int lookslikeoid(char* str);
 extern int cmd_(void);
 extern int cmd_query(int argc, char** argv);
 static void sigsetup(void);
+extern int findsierra(int len, char* buf);
 
 #undef  CMD$
 #define CMD$(cmd, sub, arg, func) extern int func(int argc, char** argv);
@@ -163,7 +165,8 @@ static void sigsetup(void)
 
 int main(int argc, char** argv)
 {
-	char* modem = "/dev/ttyUSB1";
+	char* modem = NULL;
+	int mdlen = 100;
 	int c;
 	int r;
 
@@ -178,6 +181,9 @@ int main(int argc, char** argv)
 			case 'd': modem = optarg; break;
 			case '?': return -1;
 		}
+
+	if(!modem && findsierra(mdlen, modem = alloca(mdlen)))
+		errx(0, "can't find suitable device");
 
 	if((hipfd = open(modem, O_RDWR)) < 0)
 		err(errno, "can't open %s", modem);
