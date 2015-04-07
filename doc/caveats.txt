@@ -2,13 +2,13 @@ CnS caveats
 ~~~~~~~~~~~
 These are short notes describing some rought corners I've ran into.
 May be useful for those trying to extend sierracns.
-(at least you'll same some idea of what kind of troubles to expect)
+(at least you'll have some idea of what kind of troubles to expect)
 
 
 OIDs mess
 ~~~~~~~~~
 There's a significant difference between documented behavior and what
-I observe with an actual device in hand. The problem is, the device I have
+I observe with the actual device in hand. The problem is, the device I have
 is an older CDMA unit while most of the documentation concerns relatively
 recent UMTS models.
 
