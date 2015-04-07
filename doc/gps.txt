@@ -1,8 +1,13 @@
 GPS issues
 ~~~~~~~~~~
-Some units (in particular Sprint-branded 595U) have GPS disabled in nvram and/or firmware.
-This may not be apparent immediately. The modem accepts GPS commands, both AT and CnS,
-and spends some time searching for the signal. The results is always FAIL.
+Some units (in particular Sprint-branded 595U) have GPS disabled in nvram
+and/or firmware.  This may not be apparent immediately. The modem accepts GPS
+commands, both AT and CnS, and spends some time searching for the signal.
+The results is always FAIL.
 
 Sierra Watcher can report this is some cases, showing GPS options as disabled,
 though the build I have just segfaults when GPS button is pressed.
+
+The hardware is still the same, but the only fix known (re-flashing the unit
+with what Sierra tools see as incompatible firmware) is non-trivial,
+so for most intents and purposes these units lack GPS.
