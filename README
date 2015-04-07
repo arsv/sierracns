@@ -44,10 +44,8 @@ There are several versions with serious compatibility issues between them,
 and no clear way to tell which one is being used.
 
 Of particular importance is the difference between older CDMA/EV-DO and newer
-GSM/UMTS/WCDMA modems. They apparently accept the same requests, but reply with
-wildly different data.
-Bogus output from sierracns should not come as a surprise.
-
+GSM/UMTS/WCDMA modems, as they may reply with wildly different data to the
+same requests. Bogus output from sierracns should not come as a surprise.
 
 
 Author
