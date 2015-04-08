@@ -13,6 +13,7 @@
 #define CNS_ND			0x08
 #define CNS_NDREPLY		0x09
 #define CNS_ERRORMASK		0x80
+/* NE/ND = notification enable/diable */
 
 #define packed __attribute__((__packed__))
 
