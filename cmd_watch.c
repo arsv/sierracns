@@ -66,12 +66,11 @@ static int watchoids(int n, int* oids)
 	return 0;
 }
 
-/* Listen for notifications, and disable any heard.
-   This is mostly to return modem into some sane state after running
-   Sierra Watcher in no-reset-at-exit mode.
+/* Listen for notifications, and disable any received.
+   This is mostly to return modem into some kind of sane state after
+   running Sierra Watcher in no-reset-at-exit mode.
  
-   With non-zero argc, issues ND for listed oids.
- */
+   With non-empty argv, issues ND for listed oids only. */
 
 static int unwatch_oids(int argc, char** argv)
 {
