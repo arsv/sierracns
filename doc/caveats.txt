@@ -8,7 +8,7 @@ May be useful for those trying to extend sierracns.
 OIDs mess
 ~~~~~~~~~
 There's a significant difference between documented behavior and what
-I observe with the actual device in hand. The problem is, the device I have
+is observed with the actual device in hand. The problem is, the device I have
 is an older CDMA unit while most of the documentation concerns relatively
 recent UMTS models.
 
@@ -18,22 +18,20 @@ It's natural to assume the difference is solely due to
 my device being CDMA card and not UMTS, and that all UMTS units should
 work more or less the same way and that the same goes for all CDMA units.
 
-However, there are strong indications that this is not the case, and that
-the protocol is much more messy than it should have been.
-Aside from apparent UMTS/CDMA group overlaps (see below), my MC5725 card
-uses different data formats than what's described for MC5725 with a newer
-firmware.
+However, this may not be the case, and it looks like the protocol is much
+more messy than it should be. Aside from apparent UMTS/CDMA group overlaps,
+my MC5725 card uses different data formats than what's described for MC5725
+with a newer firmware.
 
-It does not look like there is a simple way to tell which version is being
-used, or in fact which standard the modem operates in.
-There's 000A request, but it's listed as "deprecated" for newer modems,
-and while it does contain CDMA/UTMS flag, my modem returns 0 which is
-(no-value) instead.
+There is no simple way to tell which version is being used, or in fact which
+standard the modem operates in. There's 000A request, but it's listed
+as "deprecated" for newer modems. And while it does contain CDMA/UTMS flag,
+my modem returns 0 which is (no-value) instead.
 
 
 Truncated responses
 ~~~~~~~~~~~~~~~~~~~
-Documented responses for my particular modem with newer FW version
+Documented responses for my particular model with newer FW version
 are longer and contain more data. Aforementioned 000A in paricular
 should have the name of the modem, as text. MC5725 only returns 4 bytes,
 numeric model code and 0 instead of supported standard.
@@ -44,11 +42,11 @@ Incomplete documentation
 Document specifically describing MC5725 lists 11 requests labelled
 "... all CnS messages supported by ... MC5725 ..."
 
-In reality, my modem accepts something like 120 oids at least,
+In reality, MC5725 modem accepts something like 120 oids at least,
 plus about 50 more are apparently valid but require something
-other than a simple get operation.
+other than a simple get operation to get non-error response.
 
-The reasons for omission is completely unclear, as the list excludes
+The reasons for omission are completely unclear, as the list excludes
 purely informative 0001, 0002, 0003, 0004 apparently supported by all
 units, CDMA and UMTS. Among skipped requests is also 1032 which clearly
 returns current time.
