@@ -25,9 +25,9 @@
 
 int signalled = -1;
 
-int opt_H = 0;	/* dump all HIP packets */
-int opt_C = 0;	/* dump all CnS packets */
-int opt_O = 0;	/* dump also outgoing packets */
+int opt_H = 0;	/* dump raw HIP packets */
+int opt_C = 0;	/* dump raw CnS packets */
+int opt_O = 0;	/* dump outgoing packets */
 int opt_c = 0;	/* dump unrecognized CnS packets */
 int opt_n = 0;	/* show NE/ND packets */
 int opt_a = 0;	/* show stray CnS packets */

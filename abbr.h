@@ -1,6 +1,6 @@
 /* Commands and oid_NNN functions must be listed at least twice
    outside of the place they are defined in: first, as prototypes,
-   and then as an entry in relevant dict-list.
+   and then as entrie in relevant dict-list.
 
    Both also carry some information that's irrelevant near
    declaration but must be mentioned in dict-list (min length etc).

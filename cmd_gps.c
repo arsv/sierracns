@@ -91,7 +91,7 @@ SUB(gps, fix, hasargs)
 	if(setcns(0x0F02, sizeof(req), (char*)&req))
 		return -1;
 	if(S(2))
-		goto nd; /* fix request failed, skip watch part */
+		goto nd; /* fix request failed, skip the watch part */
 	if(watchcns(m, term, &last))
 		return -1;
 nd:	if(queryall(n, oids, CNS_ND))
