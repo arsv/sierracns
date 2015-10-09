@@ -52,10 +52,10 @@ The basic way of communicating with the modem. Each [oid] chunk represents a sin
 encoded this way:
 .IP "NNNN[o[PPPP....]]" 10
 .P
-where NNNN is oid (hexadecimal, 4 digits), o is operation and PPPP... is payload.
-Operations: get ":", set "=", enable notifications "+", disable notifications "-".
+where NNNN is the oid (hexadecimal, 4 digits), o is operation and PPPP... is payload.
+Possible operations are get ":", set "=", enable notifications "+", disable notifications "-".
 Bare oid means empty get request. Payload is a sequence of hex byte value,
-like 23 or 7F, possibly separated with - for readability.
+like 23 or 7F, possibly separated with dashes for readability.
 .P
 Examples:
 .IP "0003"
@@ -107,7 +107,7 @@ Some OIDs the tool can decode:
 '''
 .SS Commands
 These are mostly shorthands for common OIDs and OID sequences, including those
-for which payload is non-trivial and hard to write manually.
+for which payload is non-trivial or hard to write manually.
 '''
 .sp
 .IP "\fBrssi\fR" 4
