@@ -42,7 +42,7 @@ static int queryoid(char* oidspec)
 
 	oid = strtol(oidspec, &end, 16);
 	if(end != oidspec + 4)
-		errx(0, "4-digit hex number expected, got %s", oidspec);
+		errx(5, "4-digit hex number expected, got %s", oidspec);
 
 	switch(oidspec[4]) {
 		case ':': op = CNS_GET; break;
@@ -51,7 +51,7 @@ static int queryoid(char* oidspec)
 		case '-': op = CNS_ND; break;
 		case '\0': op = CNS_GET; break;
 		default:
-			   errx(0, "bad op specification: %s", oidspec);
+			   errx(5, "bad op specification: %s", oidspec);
 	}
 
 	int speclen = oidspec[4] ? strlen(oidspec + 5) : 0;
@@ -78,7 +78,7 @@ static void parsepayload(char* spec, int* len, char* payload)
 		if(strchr("-,", *p))
 			p += 1;
 		else if(parsehexbyte(q++, p))
-			errx(0, "bad oid payload: %s", spec);
+			errx(5, "bad oid payload: %s", spec);
 		else /* parsehexbyte fails if there's less that two characters at p */
 			p += 2;
 

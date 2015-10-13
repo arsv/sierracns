@@ -46,7 +46,7 @@ CMD(watch, hasargs)
 	for(i = 0; i < argc; i++) {
 		oids[i] = strtol(argv[i], &end, 16);
 		if(end != argv[i] + 4 || *end)
-			errx(0, "4-digit hex number expected, got %s", argv[i]);
+			errx(5, "4-digit hex number expected, got %s", argv[i]);
 	}
 
 	return watchoids(argc, oids);
@@ -81,7 +81,7 @@ static int unwatch_oids(int argc, char** argv)
 	for(i = 0; i < argc; i++) {
 		oid = strtol(argv[i], &end, 16);
 		if(end != argv[i] + 4 || *end)
-			errx(0, "4-digit hex number expected, got %s", argv[i]);
+			errx(5, "4-digit hex number expected, got %s", argv[i]);
 		if(querycns(nE, oid, CNS_ND, 0, NULL) < 0)
 			return -1;
 	}

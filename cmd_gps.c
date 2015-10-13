@@ -72,7 +72,7 @@ SUB(gps, fix, hasargs)
 		if(!strcmp(arg, "-"))
 			watch = 1;
 		else
-			errx(0, "unknown keyword %s", arg);
+			errx(5, "unknown keyword %s", arg);
 	}
 
 	if(!watch)
@@ -135,6 +135,6 @@ SUB(gps, ip, noargs)
 
 CMD(gps, hasargs)
 {
-	if(argc) errx(0, "unknown subcommad %s", *argv);
+	if(argc) errx(5, "unknown subcommad %s", *argv);
 	return getcns(0x0F0A);
 }

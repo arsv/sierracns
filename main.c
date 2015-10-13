@@ -104,11 +104,11 @@ int trycmds(int argc, char** argv)
 		break;
 	} if(!cmd->pri) {
 		if(primatch && argc > 1)
-			errx(0, "unknown %s subcommand %s", *argv, *(argv+1));
+			errx(5, "unknown %s subcommand %s", *argv, *(argv+1));
 		else if(primatch)
-			errx(0, "command %s needs subcommand", *argv);
+			errx(5, "command %s needs subcommand", *argv);
 		else
-			errx(0, "unknown command %s", *argv);
+			errx(5, "unknown command %s", *argv);
 	}
 
 	return cmd->func(argc - 1, argv + 1);
@@ -131,7 +131,7 @@ int modemsetup(int fd)
         tio.c_cc[VTIME] = 0;
 
         if(tcsetattr(fd, TCSANOW, &tio))
-                err(errno, "tcsetattr");
+                err(4, "tcsetattr");
 
         return 0;
 }
@@ -158,9 +158,9 @@ static void sigsetup(void)
 	};
 
 	if(sigaction(SIGINT, &sa, NULL))
-		err(errno, "sigaction");
+		err(1, "sigaction");
 	if(sigaction(SIGALRM, &sa, NULL))
-		err(errno, "sigaction");
+		err(1, "sigaction");
 }
 
 int main(int argc, char** argv)
@@ -183,13 +183,13 @@ int main(int argc, char** argv)
 		}
 
 	if(!modem && findsierra(mdlen, modem = alloca(mdlen)))
-		errx(0, "can't find suitable device");
+		errx(2, "can't find suitable device");
 
 	if((hipfd = open(modem, O_RDWR)) < 0)
-		err(errno, "can't open %s", modem);
+		err(3, "can't open %s", modem);
 
 	if(flock(hipfd, LOCK_EX | LOCK_NB))
-		err(errno, "can't lock %s", modem);
+		err(3, "can't lock %s", modem);
 
 	modemsetup(hipfd);
 	sigsetup();
@@ -199,7 +199,7 @@ int main(int argc, char** argv)
 	optind = 0;
 
 	if(argc <= 0)
-		errx(0, "command required");
+		errx(5, "command required");
 
 	if(lookslikeoid(*argv))
 		r = cmd_query(argc, argv);

@@ -24,7 +24,7 @@ CMD(poke, noargs)
 		else if(errno == EINTR)
 			printf("No reply, must be dead\n");
 		else
-			err(errno, NULL);
+			err(9, "query failed");
 		return -1;
 	} else {
 		printf("Alive and kicking\n");

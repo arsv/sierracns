@@ -107,9 +107,9 @@ int encodesend(void)
 	int sent = write(hipfd, txbuf, txlen);
 
 	if(sent < 0)
-		err(errno, "send failed");
+		err(6, "send failed");
 	if(sent != txlen)
-		err(errno, "send: only %i bytes out of %i", sent, txlen);
+		err(6, "send: only %i bytes out of %i", sent, txlen);
 
 	return 0;
 }
