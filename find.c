@@ -6,20 +6,20 @@
 #include <err.h>
 
 /* With no -d specified, the tool needs to guess which tty
- * to use. Sierra's are generic nondescript usb ttys,
- * but they are always handled by sierra.ko, so we look through
- *
- *     /sys/bus/usb/drivers/sierra/(device)/ttyUSB(n)
- *
- * and pick the second tty (presumed to be CnS port) of the first
- * device found. Sierra devices always seem to register their ports
- * in sequence, so it's a good guess.
- *
- * Now we can't rely on n being 1 due to possible presence of other
- * usb ttys, or on /dev/ttyUSB(n) existing even if it is listed
- * in sysfs since udev could have renamed it.
- * So instead, we take n to be device minor number and use
- * /dev/char/188:n instead. */
+   to use. Sierra's are generic nondescript usb ttys,
+   but they are always handled by sierra.ko, so we look through
+
+       /sys/bus/usb/drivers/sierra/(device)/ttyUSB(n)
+
+   and pick the second tty (presumed to be CnS port) of the first
+   device found. Sierra devices always seem to register their ports
+   in sequence, so it's a good guess.
+
+   Now we can't rely on n being 1 due to possible presence of other
+   usb ttys, or on /dev/ttyUSB(n) existing even if it is listed
+   in sysfs since udev could have renamed it.
+   So instead, we take n to be device minor number and use
+   /dev/char/188:n instead. */
 
 #define USB_TTY_MAJ 188
 

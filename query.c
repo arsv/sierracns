@@ -19,7 +19,8 @@ int querycns(int mode, int oid, int op, int len, char* payload)
 	if(sendcns(oid, op, len, payload))
 		return -1;
 	
-	op += 1; 	/* this assumes N*REPLY = N + 1, a rather accidental feature of CnS op field */
+	op += 1;        /* this assumes N*REPLY = N + 1, a rather accidental
+	                   feature of CnS op field */
 	while(1) {
 		if(recvcns())
 			return -1;
@@ -67,8 +68,9 @@ int queryall(int n, int* oids, int op)
 
 /* Keep reading and show()ing packets until interrupted by a signal.
    Typical sequence is queryall(..., CNS_NE), watchcns, queryall(...., CNS_ND)
-   but since modems do not reset active notifications on falling DTR it is totally
-   possible to issue NE request, detach, and then come back to listen for notifications. */
+   but since modems do not reset active notifications on falling DTR
+   it is totally possible to issue NE request, detach, and then come back
+   to listen for notifications. */
 int watchcns(int m, int* term, int* which)
 {
 	int i;
