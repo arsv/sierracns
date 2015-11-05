@@ -57,6 +57,10 @@ struct cmd {
 	{ NULL, NULL }
 };
 
+/* OID commands start with 4 hex digits, possibly followed by query
+   type char and payload. Anything else is a regular command to be
+   checked against cmds[]. The source of confusion here are numbers
+   like "aaaa" (oid) and "aaa" (command, should be "0aaa" instead). */
 static int lookslikeoid(char* str)
 {
 	int i;
@@ -85,6 +89,10 @@ static int lookslikeoid(char* str)
 	}
 }
 
+/* Some additional care is needed here to match subcommands and produce
+   readable error messages. The entries in cmds[] are ordered so that
+   raw command comes after any of its subcommands, allowing a one-pass
+   scan over cmds[]. */
 int trycmds(int argc, char** argv)
 {
 	struct cmd* cmd;
