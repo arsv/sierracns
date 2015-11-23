@@ -23,7 +23,7 @@
 
 #define USB_TTY_MAJ 188
 
-char* sierrabase = "/sys/bus/usb/drivers/sierra";
+const char* sierrabase = "/sys/bus/usb/drivers/sierra";
 
 int findmidtty(char* sysdevdir)
 {
