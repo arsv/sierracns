@@ -11,6 +11,18 @@
 #include "wire.h"
 #include "dict.h"
 
+/* All oid*.c routines dump a single CnS packet located
+   in the common buffer.
+   
+   Most dumping routines need something like "uint 8/16/32 value located
+   at offset X", so there are a bunch of macros for accessing that.
+
+   This could have been done by overlaying structs over the buffer,
+   with proper field names and such, but given how simple the code is,
+   it would only increase its size and decrease readability.
+
+   Note all ints coming from the modem are big-endian! */
+
 extern struct cns* cns;
 
 /* Byte, short and (32bit) int at specified offsets in cns payload. */
