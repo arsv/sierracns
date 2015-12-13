@@ -9,13 +9,14 @@ sierracns \- Control and Status (CnS) protocol tool for Sierra Wireless 3G/4G mo
 \fBsierracns\fR [\fIoptions\fR] \fIcommand\fR [\fRarg\fR ...]
 '''
 .SH DESCRIPTION
+sierracns sends and recieves CnS packets to Sierra devices.
+
 Sierra Wireless 3G modems handled by sierra.ko kernel driver provide three
 TTY devices, typically named ttyUSB0, ttyUSB1 and ttyUSB2.
 The 1st port (ttyUSB0) provides Hayes modem interface (AT commands, PPP).
 The 3rd port (ttyUSB2) is GPS NMEA output.
 
-Sierra Control and Status (CnS) is the protocol these modems talk
-on their 2nd tty interface. 
+CnS is the protocol these modems talk on their 2nd tty interface. 
 
 CnS allows querying runtime status data from the modem without interrupting
 PPP connection on the 1st port, as well as doing some configuration like setting
