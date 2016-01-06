@@ -35,7 +35,7 @@ SUB(watch, hdr, noargs)
    payload. It's ok though, since there's exactly one described oid that
    takes payload with NE and it's not very likely to be watched anyway.
  
-   In case NE with payload is to be issued, query() can be used instead. */
+   For NE packets with payload, query() should be used instead. */
 
 CMD(watch, hasargs)
 {

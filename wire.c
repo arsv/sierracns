@@ -11,7 +11,7 @@
 #define TXBUFLEN 500
 #define PACKETLEN 500
 
-static int rxbuflen = RXBUFLEN;
+static int rxbuflen = RXBUFLEN;	/* total size of the buffers */
 static int txbuflen = TXBUFLEN;
 static int tdbuflen = PACKETLEN;
 static int rdbuflen = PACKETLEN;
@@ -19,20 +19,22 @@ static int rdbuflen = PACKETLEN;
 /* This is twice the number of buffers actually needed, but having it all
    available makes opt_H and opt_O handling much easier. */
 
-static char rxbuf[RXBUFLEN];	/* [rt]xbuf are raw wire bytes, with 7E delimiters and escaping */
-static char txbuf[TXBUFLEN];
+static char rxbuf[RXBUFLEN];	/* [rt]xbuf are raw wire bytes, */
+static char txbuf[TXBUFLEN];	/*   with 7E delimiters and escaping */
 static char rdbuf[PACKETLEN];	/* [rt]dbuf are for decoded data. */
 static char tdbuf[PACKETLEN];
 
-static int rxlen = 0;		/* used space (as opposed to rxbuflen which is available space) */
+static int rxlen = 0;		/* used space */
 static int rxptr = 0;		/* end of a complete packet, if any */
 static int txlen = 0;		/* length of stuff to send */
 static int rdlen = 0;
 static int tdlen = 0;
 
-/* Globals! Because everyone likes globals */
-int hipfd = -1;
-struct hip* hip = NULL;		/* current decoded packet being sent/recvd, or NULL */
+/* External interface. Due to the scope of the tool, there's always
+   a single connection and a single packet being processed. */
+
+int hipfd = -1;			/* opened modem tty */
+struct hip* hip = NULL;		/* current HIP packet being sent/recvd */
 struct cns* cns = NULL;		/* same, CnS packet */
 
 /* It's very convenient to tap data flows here in wire.c instead of trying
@@ -71,8 +73,8 @@ static int encpacket(void)
 	return 0;
 }
 
-/* There's a HIP packet in rxbuf, from 0 to rxptr. Decode it, setting up
-   hip and possibly also cns if it happens to be a CnS packet. */
+/* There's a HIP packet in rxbuf, from 0 to rxptr.
+   Decode it into rdbuf, setting rdlen to the decoded length. */
 static int decpacket(void)
 {
 	char *p, *q;
@@ -231,6 +233,9 @@ int recvhip(void)
 	return 0;
 }
 
+/* Receive a HIP, and set *cns if it happens to be a CnS packet.
+   Not every HIP packet has CnS payload, though it does not look
+   like the device ever sends non-CnS HIPs on its own. */
 int recvcns(void)
 {
 	cns = NULL;
