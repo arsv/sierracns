@@ -122,8 +122,9 @@ static struct dict PU[] = {
 	{ 0x0000, NULL }
 };
 
-/* GPS status, roughly the same as AT!GPSSTATUS */
-/* No idea how DLoad works even with AT commands, so that part is skipped */
+/* GPS status, roughly the same as AT!GPSSTATUS.
+   No idea how DLoad works even with AT commands, so that part is skipped */
+
 OID(0F03, GN, 82)
 {
 	static struct dict D[] = {

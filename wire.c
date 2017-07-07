@@ -75,13 +75,15 @@ static int encpacket(void)
 
 /* There's a HIP packet in rxbuf, from 0 to rxptr.
    Decode it into rdbuf, setting rdlen to the decoded length. */
+
 static int decpacket(void)
 {
 	char *p, *q;
 	char* rxend = rxbuf + rxptr;
 	char* rdend = rdbuf + rdbuflen;
 
-	/* rxptr points at the terminating 7E, so it's p = rxbuf + 1 but p < rxend */
+	/* rxptr points at the terminating 7E,
+	   so it's p = rxbuf + 1 but p < rxend */
 	for(p = rxbuf + 1, q = rdbuf; p < rxend && q < rdend; p++)
 		if(*p == 0x7D)
 			*(q++) = *(++p) ^ 0x20;
@@ -95,8 +97,9 @@ static int decpacket(void)
 	return 0;
 }
 
-/* Unencoded data to send is in txbuf, its length is txlen. */
-/* Encode the packet and send it. */
+/* Unencoded data to send is in txbuf, its length is txlen.
+   Encode the packet and send it. */
+
 int encodesend(void)
 {
 	if(opt_H && opt_O)
@@ -117,6 +120,7 @@ int encodesend(void)
 }
 
 /* Skip garbage (that's anything before 7E) at the start of rxbuf */
+
 static void pullrx(int d)
 {
 	memmove(rxbuf, rxbuf + d, rxlen - d);
@@ -126,6 +130,7 @@ static void pullrx(int d)
 /* Receive some bytes, and do basic HIP packet checks.
    Return packet length when there's a full HIP packet at the start of rxbuf,
    or 0 if there' none. */
+
 static int packetend(void)
 {
 	char* p;
@@ -198,6 +203,7 @@ int sendcns(int oid, int op, int len, const char* data)
 
 /* Get next HIP packet. Generally means reading from the TTY,
    but may also return immediately if there's one more in rxbuf. */
+
 int recvhip(void)
 {
 	int readlen;
@@ -236,6 +242,7 @@ int recvhip(void)
 /* Receive a HIP, and set *cns if it happens to be a CnS packet.
    Not every HIP packet has CnS payload, though it does not look
    like the device ever sends non-CnS HIPs on its own. */
+
 int recvcns(void)
 {
 	cns = NULL;

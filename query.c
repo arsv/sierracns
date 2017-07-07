@@ -14,13 +14,14 @@ extern int opt_e;
 
 /* Run one query, wait for result. Returns -1 on hard errors,
    and 1 upon receiving GETERROR reply. */
+
 int querycns(int mode, int oid, int op, int len, char* payload)
 {
 	if(sendcns(oid, op, len, payload))
 		return -1;
 	
-	op += 1;        /* this assumes N*REPLY = N + 1, a rather accidental
-	                   feature of CnS op field */
+	op += 1; /* this assumes N*REPLY = N + 1, a rather
+	            accidental feature of CnS op field */
 	while(1) {
 		if(recvcns())
 			return -1;
@@ -44,6 +45,7 @@ int querycns(int mode, int oid, int op, int len, char* payload)
 
 /* Two common short-hands: simple GET query dumping any reply,
    and SET query showing errors but silently accepting results. */
+
 int getcns(int oid)
 {
 	return querycns(RE, oid, CNS_GET, 0, NULL);
@@ -54,7 +56,8 @@ int setcns(int oid, int len, char* payload)
 	return querycns(nE, oid, CNS_SET, len, payload);
 }
 
-/* For NE and ND queries */
+/* For NE/ND (notification enable/disable) queries */
+
 int queryall(int n, int* oids, int op)
 {
 	int i;
@@ -68,9 +71,10 @@ int queryall(int n, int* oids, int op)
 
 /* Keep reading and show()ing packets until interrupted by a signal.
    Typical sequence is queryall(..., CNS_NE), watchcns, queryall(...., CNS_ND)
-   but since modems do not reset active notifications on falling DTR
-   it is totally possible to issue NE request, detach, and then come back
+   but since modems do not reset active notifications on falling DTR it is
+   totally possible to issue NE request, detach, and then come back
    to listen for notifications. */
+
 int watchcns(int m, int* term, int* which)
 {
 	int i;

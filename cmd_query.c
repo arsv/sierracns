@@ -66,8 +66,10 @@ static int queryoid(char* oidspec)
 
 /* Parse payload specification from spec, putting the result to payload
    and adjusting *len if necessary.
-   	spec is something like "23DF-01-0000"
- 	*len is the space available initially in payload */
+
+   spec is something like "23DF-01-0000".
+   *len is the space available initially in payload. */
+
 static void parsepayload(char* spec, int* len, char* payload)
 {
 	char* p = spec;
@@ -86,6 +88,7 @@ static void parsepayload(char* spec, int* len, char* payload)
 }
 
 /* Take somethings like "7D" from src and put 0x7D to *dst */
+
 static int parsehexbyte(char* dst, char* src)
 {
 	int off;

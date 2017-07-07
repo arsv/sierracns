@@ -154,21 +154,24 @@ OID(1002, GN, 10)
 	printf("MIN: %.*s\n", L, P(0));
 }
 
-/* 2 bytes, probably v1: immediate dBm value */
+/* 1001+2 bytes, probably v1: immediate dBm value */
+
 OiD(1001, GN, 2, cmda)
 {
 	printf("RSSI -%idBm\n", S(0));
 };
 
-/* 4 bytes, probably v2: positive offset from baseline + BER */
-/* WARNING: some sources imply the baseline may be
-   either -110dBm or -125dBm depending on radio */
+/* 1001+4 bytes, probably v2: positive offset from baseline + BER.
+   WARNING: some sources imply the baseline may be either -110dBm
+   or -125dBm depending on radio. BER = bit error rate. */
+
 OiD(1001, GN, 4, umts)
 {
 	printf("RSSI -%idBm  BER ~ %.1f\n", 110 + S(0), 0.1 + 0.2*S(2));
 }
 
 /* Either v1 or CDMA-specific */
+
 OID(1065, GN, 0)
 {
 	printf("RSSI -%idBm Ec/io %.1fdBm  HDR -%idBm Ec/io %.1fdBm\n",
@@ -256,6 +259,7 @@ OID(1075, GN, 4)
 }
 
 /* Should this be in oid_net.c? What does PREV mean btw?.. */
+
 OID(101C, GN, 2)
 {
 	printf("PREV: %i\n", S(0));

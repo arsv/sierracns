@@ -61,6 +61,7 @@ struct cmd {
    type char and payload. Anything else is a regular command to be
    checked against cmds[]. The source of confusion here are numbers
    like "aaaa" (oid) and "aaa" (command, should be "0aaa" instead). */
+
 static int lookslikeoid(char* str)
 {
 	int i;
@@ -93,6 +94,7 @@ static int lookslikeoid(char* str)
    readable error messages. The entries in cmds[] are ordered so that
    raw command comes after any of its subcommands, allowing a one-pass
    scan over cmds[]. */
+
 int trycmds(int argc, char** argv)
 {
 	struct cmd* cmd;
@@ -125,6 +127,7 @@ int trycmds(int argc, char** argv)
 /* The port must be switched to raw mode; sierra.ko makes it a regular
    serial port with terminal-style line discipline, completely unsuitable
    for a protocol operating in 0x7E-delimited packets instead of lines. */
+
 int modemsetup(int fd)
 {
         struct termios tio = {

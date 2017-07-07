@@ -19,6 +19,7 @@ static struct dict dst[] = {
 };
 
 /* UMTS network time */
+
 OID(001B, GN, 19)
 {
 	printf("Network time: %04i-%02i-%02i %s %02i:%02i:%02i UTC%+02i.%02i %s",
@@ -29,6 +30,7 @@ OID(001B, GN, 19)
 }
 
 /* CDMA network time? The time is in *local* time zone. */
+
 OID(1032, GN, 14)
 {
 	printf("Network time: %04i-%02i-%02i %s %02i:%02i:%02i\n",

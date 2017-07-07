@@ -49,7 +49,8 @@ CMD(time, hasargs)
 	if((r = querycns(Rn, 0x1032, CNS_GET, 0, NULL)) <= 0)
 		return r;
 
-	/* There should be gps time somewhere too but I have no idea what the right OID is */
+	/* There should be gps time somewhere too but I have no idea
+	   what the right OID is. */
 	return -1;
 }
 
