@@ -1,62 +1,59 @@
 CnS caveats
 ~~~~~~~~~~~
-These are short notes describing some rought corners I've ran into.
-May be useful for those trying to extend sierracns.
-(at least you'll have some idea of what kind of troubles to expect)
+Short notes describing some rough corners I've ran into. May be useful
+for those trying to debug or extend sierracns.
 
 
 OIDs mess
 ~~~~~~~~~
 There's a significant difference between documented behavior and what
-is observed with the actual device in hand. The problem is, the device I have
+is observed with the actual device. That being said, the device I have
 is an older CDMA unit while most of the documentation concerns relatively
 recent UMTS models.
 
 According to documentation, there are three large groups of oids: common,
-UMTS-specific and CDMA-specific, which makes a lot of sense.
-It's natural to assume the difference is solely due to
-my device being CDMA card and not UMTS, and that all UMTS units should
-work more or less the same way and that the same goes for all CDMA units.
+UMTS-specific and CDMA-specific, which makes sense. It's natural to assume
+the difference is solely due to my device being CDMA card and not UMTS,
+and that all UMTS units should work more or less the same way. However,
+this may not be the case, and it looks like the protocol is much more messy
+than it should be. Aside from apparent UMTS/CDMA group overlaps, my MC5725
+card uses different data formats than what's described for MC5725 with
+a newer firmware.
 
-However, this may not be the case, and it looks like the protocol is much
-more messy than it should be. Aside from apparent UMTS/CDMA group overlaps,
-my MC5725 card uses different data formats than what's described for MC5725
-with a newer firmware.
-
-There is no simple way to tell which version is being used, or in fact which
-standard the modem operates in. There's 000A request, but it's listed
-as "deprecated" for newer modems. And while it does contain CDMA/UTMS flag,
-my modem returns 0 which is (no-value) instead.
+There is no simple way to tell which version is being used, or even which
+standard the modem operates in. There's 000A device info request, but it is
+listed as deprecated for newer modems. And while it does contain CDMA/UTMS
+flag, the CDMA card I've got returns 0 which is (no-value) instead.
 
 
 Truncated responses
 ~~~~~~~~~~~~~~~~~~~
-Documented responses for my particular model with newer FW version
-are longer and contain more data. Aforementioned 000A in paricular
-should have the name of the modem, as text. MC5725 only returns 4 bytes,
-numeric model code and 0 instead of supported standard.
+Documented responses for my particular model with newer FW version are
+longer and contain more data. Aforementioned 000A in particular should
+carry the name of the modem in plain text. My MC5725 only returns numeric
+model id.
 
 
 Incomplete documentation
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Document specifically describing MC5725 lists 11 requests labelled
+The document specifically describing MC5725 lists 11 requests labelled
 "... all CnS messages supported by ... MC5725 ..."
 
-In reality, MC5725 modem accepts something like 120 oids at least,
-plus about 50 more are apparently valid but require something
-other than a simple get operation to get non-error response.
+In reality, MC5725 modem accepts at least 120 oids, plus about 50 more
+are apparently valid but require something other than a simple get operation
+to get a non-error response.
 
-The reasons for omission are completely unclear, as the list excludes
-purely informative 0001, 0002, 0003, 0004 apparently supported by all
-units, CDMA and UMTS. Among skipped requests is also 1032 which clearly
+The reasons for omitting them are not clear, as the list excludes purely
+informative 0001, 0002, 0003, 0004 apparently supported by all units, CDMA
+and UMTS. Among the skipped requests is for instance 1032 which clearly
 returns current time.
 
 
 Incompatible OIDs
 ~~~~~~~~~~~~~~~~~
-These are OIDs from UMTS docs for which my MC5725 returns something
-clearly not fitting the description. Take a look if you're implementing
-one of these oids to avoid nasty surprises.
+These are OIDs from UMTS docs for which my MC5725 returns something clearly
+not fitting the description. Take a look if you're implementing one of these
+oids to avoid nasty surprises.
 
                len      description     MC5725 reply
 1004		15	IMSI		{ 03 F5 }
@@ -65,12 +62,14 @@ one of these oids to avoid nasty surprises.
 1011		 1	Disable		{ 00 00 } (maybe just short instead of byte?)
 1072		 8	Emergency numbers	only accepts ND (but not NE!)
 
-CnS address space is 2**16, of which about 0.2% tops is used for any particular unit.
-How did Sierra manage to come up with overlapping oids for CDMA and UMTS is beyond me.
+CnS address space is 2**16, of which about 0.2% tops is used for any particular
+unit. How did Sierra manage to come up with overlapping oids for CDMA and UMTS
+is beyond me.
 
 
 GET vs NOTIFICATION
 ~~~~~~~~~~~~~~~~~~~
-In most cases (well at least in all documented cases) get reply and notification have
-exactly the same payload format. There is however at least one exception: 3011 notifies
-about number being called but returns something apparently unrelated for a GET request.
+In all documented cases, GET replies and spontaneous notifications sharing the
+same OID also carry the same payload. There is however at least one exception:
+notification 3011 should be about a number being called but a GET request for
+that OID returns something clearly unrelated.

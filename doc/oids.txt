@@ -3,14 +3,15 @@ Undocumented requests
 Some requests I have no documentation for, but somehow find kinda promising.
 All tried on MC5725.
 
-Generally modem replies with "err2:invalid object id" if the oid is out of range,
-and "err4:invalid length" if get requests needs some data.
+Generally the modem replies with "err2:invalid object id" if the oid is out
+of range, and "err4:invalid length" if GET request needs some payload.
 
-The meaning of "err3:invalid operation type" and "err6:invalid request" is not clear.
-In some cases (0F0B) "invalid request" is issued because it only allows notifications,
-not get requests.
+The meaning of "err3:invalid operation type" and "err6:invalid request" is
+not clear. In some cases (0F0B) "invalid request" error indicates that the OID
+is only used for notifications, not for GET requests.
 
-Most oids ignore request payload with no error messages.
+Most oids ignore unexpected payload in GET requests.
+In the following B = byte (8bit integer), S = short (16bit integer).
 
 4015:aaaa -> { S:a B:b (8 bytes of data) B:c S:z }
 accepts any two-byte "address", repeats it together with 12 bytes of data.
@@ -27,22 +28,22 @@ X=0 produces the same string as 1002 with no payload
 
 4018 returns "2.0" (a string). Same as 0003, so chances are it's HW version.
 
-FFFF reboots modem (even a GET request!)
+FFFF reboots the modem (even a GET request!)
 
 0F01=000000000000
-start something gps-related. Returns reply similar to 0F04.
+Starts something gps-related. Returns a reply similar to 0F04.
 
 0F03 seems to be AT!GPSSTATUS data. Not documented.
 
 0F14 { S:1 S:x } == AT!GPSLOCK=x
-(the first short is apparently request version)
+(the first short is apparently the request version)
 
 7000 any SET request accepted; payload ignored. Same with 7001.
 7002, 7003 — notifications only
 
 1044:0000, 1044:0001 (other payloads rejected). Both return 3 shorts.
 
-1033 is raw NV read.
+1033 raw NV read. Takes 4-byte "address".
 
 1033:00140000 -> { 00 14 00 00 01 1B 01 80 }
                    ~~~~~~~~~~~ ^^^^^ ^^^^^

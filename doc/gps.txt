@@ -10,4 +10,4 @@ though the build I have just segfaults when GPS button is pressed.
 
 The hardware is still the same, but the only fix known (re-flashing the unit
 with what Sierra tools see as incompatible firmware) is non-trivial,
-so for most intents and purposes these units lack GPS.
+so for most intents and purposes these units should be assumed to lack GPS.
