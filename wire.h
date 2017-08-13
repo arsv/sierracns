@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 /* HIP message IDs -- CnS host to modem and modem to host */
 #define HIP_CNS_H2M		0x2B
 #define HIP_CNS_M2H		0x6B

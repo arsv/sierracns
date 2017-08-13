@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <signal.h>
-#include <alloca.h>
+#include <stdlib.h>
 #include <sys/file.h>
 #include <err.h>
 
@@ -164,8 +164,7 @@ static void sigsetup(void)
 	struct sigaction sa = {
 		.sa_handler = sighandler,
 		.sa_mask = { { 0 } },
-		.sa_flags = 0,	/* do NOT auto-resetart read() calls */
-		.sa_restorer = NULL
+		.sa_flags = 0	/* do NOT auto-resetart read() calls */
 	};
 
 	if(sigaction(SIGINT, &sa, NULL))
