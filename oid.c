@@ -167,7 +167,7 @@ OiD(1001, GN, 2, cmda)
 
 OiD(1001, GN, 4, umts)
 {
-	printf("RSSI -%idBm  BER ~ %.1f\n", 110 + S(0), 0.1 + 0.2*S(2));
+	printf("RSSI %idBm  BER ~ %.1f\n", -110 + S(0), 0.1 + 0.2*S(2));
 }
 
 /* Either v1 or CDMA-specific */
