@@ -20,8 +20,8 @@
 	cmd*.c			commands (gps, sms and such)
 
    Grouping routines by topic only (gps.c, sms.c etc) sounds like a good idea
-   at first, but it turns out there's literaly nothing common between show*
-   and commands operating on the same oids. */
+   at first, but it turns out there's literaly nothing in common between show*
+   and the commands operating on the same oids. */
 
 int signalled = -1;
 

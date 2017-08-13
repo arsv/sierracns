@@ -68,10 +68,11 @@ struct showcnsobject {
 void showcns(void)
 {
 	int oid = ntohs(cns->oid);
+	int len = ntohs(cns->len);
 	struct showcnsobject* p;
 
 	if(cns->op & CNS_ERRORMASK) {
-		printf("%04X %.*s\n", ntohs(cns->oid), ntohs(cns->len), cns->payload);
+		printf("%04X %.*s\n", oid, len, cns->payload);
 		return;
 	}
 
@@ -91,9 +92,9 @@ void showcns(void)
 			continue;
 		if(!(p->opm & (1 << cns->op)))
 			continue;
-		if(p->len > 0 && ntohs(cns->len) != p->len)
+		if(p->len > 0 && len != p->len)
 			continue;
-		if(p->len < 0 && ntohs(cns->len) < -p->len)
+		if(p->len < 0 && len < -p->len)
 			continue;
 
 		p->call();
@@ -101,7 +102,8 @@ void showcns(void)
 	}
 
 	if(!opt_C && cns)
-		dumpcns(cns->len + sizeof(struct cns), (char*) cns);	/* with -C, it's been dumped already */
+		dumpcns(cns->len + sizeof(struct cns), (char*) cns);
+	/* with -C, it's been dumped already */
 }
 
 void dumphip(int len, char* buf)
@@ -115,7 +117,12 @@ void dumphip(int len, char* buf)
 	}
 
 	int hiplen = ntohs(hip->len);
-	int paylen = (len >= sizeof(struct hip) + hiplen ? hiplen : len - sizeof(struct hip));
+	int paylen;
+	
+	if(len >= sizeof(struct hip) + hiplen)
+		paylen = hiplen;
+	else
+		paylen = len - sizeof(struct hip);
 
 	printf("HIP 0x%02X 0x%02X { ", hip->mid, hip->par);
 	for(p = hip->payload; p < hip->payload + paylen; p++)

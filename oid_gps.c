@@ -134,8 +134,8 @@ OID(0F03, GN, 82)
 		{ 0x0003, "FAIL" },
 		{ 0x0000, NULL }
 	};
-
-	/* Error code is always reported but only matters when status code is FAIL */
+	/* Error code is always reported but only matters
+	   when the status code is FAIL */
 	printf("GPS %.15s Last fix status:    [%s] %s\n",
 			P( 2), DS(18, D),
 			S(18) == 0x03 ? DS(20, PD) : "");
@@ -231,11 +231,13 @@ OID(0F0A, GN, -36)
 
 	printf("GPS time: %i\n", I(10));
 	printf("GPS location: %.6f %.6f %s\n", lat, lon, S(20) ? "3D" : "2D");
-	printf("GPS uncertainity: angle %.3f A %s P %s\n", 5.625*S(14), DS(16, PU), DS(18, PU));
+	printf("GPS uncertainity: angle %.3f A %s P %s\n",
+			5.625*S(14), DS(16, PU), DS(18, PU));
 	if(S(22))
 		printf("GPS height: %im", S(24) - 500);
 	if(S(28))
-		printf("GPS h-velocity: %.2fm/s heading %.3f°\n", 0.25*S(32), S(30)*360.0/(2<<10));
+		printf("GPS h-velocity: %.2fm/s heading %.3f°\n",
+				0.25*S(32), S(30)*360.0/(2<<10));
 	if(S(28) && S(20))
 		printf("GPS v-velocity: %.1fm/s\n", 0.5*S(34));
 }

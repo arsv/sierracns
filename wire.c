@@ -206,7 +206,7 @@ int sendcns(int oid, int op, int len, const char* data)
 
 int recvhip(void)
 {
-	int readlen;
+	int rd;
 
 	/* Remove old (already decoded) packet if there's one */
 	hip = NULL;
@@ -217,10 +217,10 @@ int recvhip(void)
 
 	/* Blocking complete read for now */
 	while(!(rxptr = packetend()))
-		if((readlen = read(hipfd, rxbuf + rxlen, rxbuflen - rxlen)) <= 0)
+		if((rd = read(hipfd, rxbuf + rxlen, rxbuflen - rxlen)) <= 0)
 			return -1;
 		else
-			rxlen += readlen;
+			rxlen += rd;
 
 	if(decpacket())
 		return -1;
@@ -232,7 +232,7 @@ int recvhip(void)
 	int explen = ntohs(hip->len);
 	int actlen = rdlen - sizeof(struct hip);
 	if(explen > actlen) {
-		warnx("HIP packet truncated: expected %i got %i bytes", explen, actlen);
+		warnx("HIP packet expected %i got %i bytes", explen, actlen);
 		hip->len = htons(actlen);
 	}
 
@@ -260,9 +260,11 @@ int recvcns(void)
 	cns = (struct cns*) hip->payload;
 
 	int explen = ntohs(cns->len);
-	int actlen = ntohs(hip->len);	/* assumed to be reasonable, see recvhip() */
+	int actlen = ntohs(hip->len);
+	/*  ^ assumed to be reasonable, see recvhip() */
+
 	if(explen > actlen) {
-		warnx("CNS packet truncated: expected %i got %i bytes", explen, actlen);
+		warnx("CNS packet expected %i got %i bytes", explen, actlen);
 		cns->len = htons(actlen);
 	}
 
